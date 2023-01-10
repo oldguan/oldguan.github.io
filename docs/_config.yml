@@ -28,6 +28,7 @@ twitter_username: oldguan
 github_username:  oldguan
 
 # Build settings
+markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
