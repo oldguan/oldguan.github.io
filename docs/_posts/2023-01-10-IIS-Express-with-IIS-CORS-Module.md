@@ -1,6 +1,6 @@
 ---
 title: 在 IIS Express 中使用 IIS CORS Module
-date: 2023-01-10 18:06
+date: 2023-01-10 18:06:08 +0800
 tags: [IIS Express, IIS CORS Module, CORS]
 ---
 
@@ -13,23 +13,23 @@ tags: [IIS Express, IIS CORS Module, CORS]
 ## 步骤
 - 修改解决方案配置文件，路径：{解决方案目录}\\.vs\\{项目名称}\config\applicationhost.config 
     1. 在 sectionGroup 节添加 cors
-    {% highlight xml%}
+    ```xml
     <sectionGroup name="system.webServer">
         ...
         <section name="cors" overrideModeDefault="Allow" />
     </sectionGroup>
-    {% endhighlight %}
+    ```
 
     2. 在 globalModules 节添加 CorsModule
-    {% highlight xml%}
+    ```xml
     <globalModules>
         ...
         <add name="CorsModule" image="%SystemRoot%\system32\inetsrv\iiscors.dll" />
     </globalModules>
-    {% endhighlight %}
+    ```
 
     3. 在 location path="" 节添加 CorsModule
-    {% highlight xml%}
+    ```xml
     <location path="" overrideMode="Allow">
         <system.webServer>
             <modules>
@@ -37,13 +37,13 @@ tags: [IIS Express, IIS CORS Module, CORS]
             <add name="CorsModule" />
             </modules>
         ...
-    {% endhighlight %}
+    ```
 
 - 将 CORS 的构架信息添加到 IIS Express 架构中  
   - 拷贝 C:\Windows\System32\inetsrv\config\schema\cors_schema.xml 到 C:\Program Files\IIS Express\config\schema 目录  
 - 根据需要修改 web.config  
     请参照[IIS CORS module](https://learn.microsoft.com/en-us/iis/extensions/cors-module/cors-module-configuration-reference) 修改
-    {% highlight xml%}
+    ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <configuration>
         <system.webServer>
@@ -68,7 +68,7 @@ tags: [IIS Express, IIS CORS Module, CORS]
             </cors>
         </system.webServer>
     </configuration>
-    {% endhighlight %}
+    ```
 - 参考信息
   - [在IIS Express中使用IIS CORS模块](https://qiita.com/nt-7/items/9f892b67980901f1a378)
   - [IIS CORS 模块配置参考](https://learn.microsoft.com/en-us/iis/extensions/cors-module/cors-module-configuration-reference)
