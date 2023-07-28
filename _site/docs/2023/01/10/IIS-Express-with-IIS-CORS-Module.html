@@ -1,0 +1,86 @@
+<h2 id="安装环境">安装环境</h2>
+<ul>
+  <li>Visual Studio 2022</li>
+  <li>IIS</li>
+  <li>IIS CORS Module
+    <ul>
+      <li>下载地址 https://www.iis.net/downloads/microsoft/iis-cors-module</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="步骤">步骤</h2>
+<ul>
+  <li>修改解决方案配置文件，路径：{解决方案目录}\.vs\{项目名称}\config\applicationhost.config
+    <ol>
+      <li>在 sectionGroup 节添加 cors
+  ```xml</li>
+    </ol>
+    <sectionGroup name="system.webServer">
+      ...
+      <section name="cors" overridemodedefault="Allow" />
+  </sectionGroup>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+  2. 在 globalModules 节添加 CorsModule
+  ```xml
+  &lt;globalModules&gt;
+      ...
+      &lt;add name="CorsModule" image="%SystemRoot%\system32\inetsrv\iiscors.dll" /&gt;
+  &lt;/globalModules&gt;
+</code></pre></div>    </div>
+
+    <ol>
+      <li>在 location path=”” 节添加 CorsModule
+  ```xml</li>
+    </ol>
+    <location path="" overrideMode="Allow">
+      <system.webServer>
+          <modules>
+          ...
+          <add name="CorsModule" />
+          </modules>
+      ...
+  ```
+
+</system.webServer></location>
+  </li>
+  <li>将 CORS 的构架信息添加到 IIS Express 架构中
+    <ul>
+      <li>拷贝 C:\Windows\System32\inetsrv\config\schema\cors_schema.xml 到 C:\Program Files\IIS Express\config\schema 目录</li>
+    </ul>
+  </li>
+  <li>根据需要修改 web.config<br />
+  请参照<a href="https://learn.microsoft.com/en-us/iis/extensions/cors-module/cors-module-configuration-reference">IIS CORS module</a> 修改
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+      <span class="nt">&lt;system.webServer&gt;</span>
+          <span class="nt">&lt;cors</span> <span class="na">enabled=</span><span class="s">"true"</span> <span class="na">failUnlistedOrigins=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;add</span> <span class="na">origin=</span><span class="s">"*"</span> <span class="nt">/&gt;</span>
+              <span class="nt">&lt;add</span> <span class="na">origin=</span><span class="s">"https://*.microsoft.com"</span>
+                  <span class="na">allowCredentials=</span><span class="s">"true"</span>
+                  <span class="na">maxAge=</span><span class="s">"120"</span><span class="nt">&gt;</span> 
+                  <span class="nt">&lt;allowHeaders</span> <span class="na">allowAllRequestedHeaders=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+                      <span class="nt">&lt;add</span> <span class="na">header=</span><span class="s">"header1"</span> <span class="nt">/&gt;</span>
+                      <span class="nt">&lt;add</span> <span class="na">header=</span><span class="s">"header2"</span> <span class="nt">/&gt;</span>
+                  <span class="nt">&lt;/allowHeaders&gt;</span>
+                  <span class="nt">&lt;allowMethods&gt;</span>
+                      <span class="nt">&lt;add</span> <span class="na">method=</span><span class="s">"DELETE"</span> <span class="nt">/&gt;</span>
+                  <span class="nt">&lt;/allowMethods&gt;</span>
+                  <span class="nt">&lt;exposeHeaders&gt;</span>
+                      <span class="nt">&lt;add</span> <span class="na">header=</span><span class="s">"header1"</span> <span class="nt">/&gt;</span>
+                      <span class="nt">&lt;add</span> <span class="na">header=</span><span class="s">"header2"</span> <span class="nt">/&gt;</span>
+                  <span class="nt">&lt;/exposeHeaders&gt;</span>
+              <span class="nt">&lt;/add&gt;</span>
+              <span class="nt">&lt;add</span> <span class="na">origin=</span><span class="s">"http://*"</span> <span class="na">allowed=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;/cors&gt;</span>
+      <span class="nt">&lt;/system.webServer&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>参考信息
+    <ul>
+      <li><a href="https://qiita.com/nt-7/items/9f892b67980901f1a378">在IIS Express中使用IIS CORS模块</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/iis/extensions/cors-module/cors-module-configuration-reference">IIS CORS 模块配置参考</a></li>
+    </ul>
+  </li>
+</ul>
